@@ -4,7 +4,7 @@ Below is the exercise the team would like you to work on and return to us by Mon
 
 Todd
 
--------------------
+
 #General Requirements:
 
 Implement the stories described below. The purpose is to evaluate the developer in terms of their ability to learn and implement the required technologies, which are:
