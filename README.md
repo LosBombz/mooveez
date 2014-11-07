@@ -26,7 +26,7 @@ Results will be evaluated on the following:
 Stories to implement (Project Scope):
 Note: The page should not reload to accomplish any of these tasks.
 
- 1.  As an end-user I want to see a table of movies via a specific search term from [myapifilms](http://www.myapifilms.com) [omdbapi](http://www.omdbapi.com/) (against IMDB) with the following columns:
+ 1.  As an end-user I want to see a table of movies via a specific search term from [myapifilms](http://www.myapifilms.com) [OMDb](http://www.omdbapi.com/) (against IMDB) with the following columns:
     *   Title
     *   Release Date
     *   Director or list of Directors

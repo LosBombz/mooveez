@@ -37,11 +37,32 @@
 
     //     });
     // });
+    // 
+    // 
+    // MOOVEES
+    // Project Plan:
+    // 
+    // 1. a search box that initiates a service call to http://www.myapifilms.com
+    // 2. a model that gets results from the search
+    // 3. renders a table with title, year, director(s)
+    // 4. filter table by any column
+    // 5. no more than 20 per page
+    // 6. pagination that advances through results (collection)
+    // 7. detail view
+    // 
+    // models: movie model
+    // collectionmodel: movies collection
+    // views: serch/table view, movie detail view
+    // routes: index, detail:movie_id
+    //  
     
-    var App = Ember.Application.create();
+    var Moo = Ember.Application.create();
 
-    App.Router.map(function() {
+    // Movie Model
+
+    Moo.Router.map(function() {
         // this.resource('todos', { path: '/' });
+        this.route('movie');
     
     });
 

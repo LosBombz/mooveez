@@ -45,20 +45,72 @@
 			<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 				<div class="container">
 					<div class="navbar-header">
-						<a class="navbar-brand" href="#">Mooveez</a>
+						{{#link-to "index" class="navbar-brand"}}Mooveez{{/link-to}}
 					</div>
 				</div>
 			</nav>
+			
+			{{outlet}}
 
-			<div class="container">
-				<h1>Dopest films evarr</h1>
-				{{outlet}}
-
-	    	</div><!-- /.container -->
-
-		    
-		    
 	  	</script>
+
+	  	<script type="text/x-handlebars" data-template-name="index">
+	  		<div class="container">
+				<h1>Mooveez Search</h1>
+				<form class="navbar-form navbar-left" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th><a href="#" title="">Title</a></th>
+							<th><a href="#" title="">Release Date</a></th>
+							<th><a href="#" title="">Director(s)</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>{{#link-to "movie"}}Star Wars{{/link-to}}</td>
+							<td>1977</td>
+							<td>George Lucas</td>
+						</tr>
+						
+			        </tbody>
+  				</table>
+
+  				<nav>
+					<ul class="pagination">
+						<li class="disabled"><a href="#">&laquo;</a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#">&raquo;</a></li>
+					</ul>
+				</nav>
+			</div><!-- /.container -->
+	  	</script>
+
+		<script type="text/x-handlebars" data-template-name="movie">
+			<div class="container">
+	    		<h1>Star Wars: Episode IV - A New Hope (1977)</h1>
+	    		<img src="http://ia.media-imdb.com/images/M/MV5BMTU4NTczODkwM15BMl5BanBnXkFtZTcwMzEyMTIyMw@@._V1__SX260_SY646_.jpg" alt="">
+	    		<p>Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a wookiee and two droids to save the universe from the Empires world-destroying battle-station, while also attempting to rescue Princess Leia from the evil Darth Vader.
+	    		</p>
+	    		<ul>
+	    			<li>Director: George Lucas</li>
+	    			<li>Writer: George Lucas</li>
+	    			<li>Stars: Mark Hamill, Harrison Ford, Carrie Fisher |</li>
+	    		</ul>
+
+	    	</div>
+		</script>
 
 		<script src="scripts/app.main.js"></script>
 		
