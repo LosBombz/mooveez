@@ -40,8 +40,7 @@ module.exports = function (grunt) {
 			'clean:server',
 			'connect:livereload',
 			'open:server',
-			'includes:dev',
-			'watch',
+			'watch'
 
 		]);
 	});
@@ -53,7 +52,6 @@ module.exports = function (grunt) {
 		'imagemin',
 		'copy',
 		'compass',
-		'includes:dist',
 		'processhtml'
 	]);
 
