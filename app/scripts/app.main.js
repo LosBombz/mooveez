@@ -66,6 +66,34 @@
     
     });
 
+    Moo.MovieRoute = Ember.Route.extend({
+        model: function(){
+            return {
+                    "Title":"Star Wars: Episode IV - A New Hope",
+                    "Year":"1977",
+                    "Rated":"PG",
+                    "Released":"25 May 1977",
+                    "Runtime":"121 min",
+                    "Genre":"Action, Adventure, Fantasy",
+                    "Director":"George Lucas",
+                    "Writer":"George Lucas",
+                    "Actors":"Mark Hamill, Harrison Ford, Carrie Fisher, Peter Cushing",
+                    "Plot":"A young boy from Tatooine sets out on an adventure with an old Jedi named Obi-Wan Kenobi as his mentor to save Princess Leia from the ruthless Darth Vader and Destroy the Death Star built by the Empire which has the power to destroy the entire galaxy.",
+                    "Language":"English",
+                    "Country":"USA",
+                    "Awards":"Won 6 Oscars. Another 38 wins & 26 nominations.",
+                    "Poster":"http://ia.media-imdb.com/images/M/MV5BMTU4NTczODkwM15BMl5BanBnXkFtZTcwMzEyMTIyMw@@._V1_SX300.jpg",
+                    "Metascore":"91",
+                    "imdbRating":"8.7",
+                    "imdbVotes":"683,488",
+                    "imdbID":"tt0076759",
+                    "Type":"movie",
+                    "Response":"True"
+                };
+
+        }
+    });
+
 }());
 
 
