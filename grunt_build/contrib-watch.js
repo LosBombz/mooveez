@@ -21,19 +21,13 @@ module.exports = function(grunt) {
 			tasks: ['compass:dev']
 		},
 
-		// watch for changes in include files
-		includes: {
-			files: '<%= config.app %>/includes/*/*.html',
-			tasks: ['includes:dev']
-		},
-
 		// live reload page on changes made to these files
 		livereload: {
 			options: {
 				livereload: grunt.LIVERELOAD_PORT
 			},
 			files: [
-				'<%= config.app %>/includes{,*/}*.html',
+				'<%= config.app %>/{,*/}*.html',
 				'<%= config.app %>/styles/{,*/}*.scss',
 				'{.tmp,<%= config.app %>}/scripts/{,*/}*.js',
 				'<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',

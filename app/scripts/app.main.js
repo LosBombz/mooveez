@@ -1,96 +1,157 @@
 /*global require, Modernizr, Ember*/
 
-/*
-* This file is considered the main application bootstrap. For simple projects this file
-* could be all you need for site functionality. For more than very basic js sites give minion.js a try:
-* https://bitbucket.org/genuine/minion
-*
-* or in the commandline using bower:
-* bower install git@bitbucket.org:genuine/minion.git --save-dev
- */
-
 (function(){
     'use strict';
 
-    // require.config({
-    //     shim: {
-    //         /* shim non AMD dependencies here */
-    //     },
-    //     paths: {
+    /**
+     * 
+     * loading class used for showing loading feedback when a call is made the movie API
+     * 
+     */
+    function Loader(){
+        this.$el = $('<div />', {
+            css: {
+                position: 'fixed',
+                width: 200,
+                height: 50,
+                top: '50%',
+                left: '50%',
+                margin: '-25px 0 0 -100px',
+                display: 'none'
+            },
+            text: 'loading results...'
+        });
+    }
 
-    //         // libraries
-    //         jquery: 'bower_components/jquery/jquery',
-    //         backbone: 'bower_components/backbone/backbone',
-    //         underscore: 'bower_components/underscore/underscore',
-    //         text: 'bower_components/requirejs-text/text'
 
-    //     }
-    // });
+    /**
+     * show the loading element
+     */
+    Loader.prototype.show = function(){
+        this.$el.appendTo('body').show();
+    };
 
-    // require(['jquery', 'underscore'], function($, _) {
 
-    //     $(function(){
+    /**
+     * hide the loading element
+     */
+    Loader.prototype.hide = function(){
+        this.$el.hide().remove();
+    };
 
-    //         /*
-    //         Dom Ready code goes in here
-    //          */
 
-    //     });
-    // });
-    // 
-    // 
-    // MOOVEES
-    // Project Plan:
-    // 
-    // 1. a search box that initiates a service call to http://www.myapifilms.com
-    // 2. a model that gets results from the search
-    // 3. renders a table with title, year, director(s)
-    // 4. filter table by any column
-    // 5. no more than 20 per page
-    // 6. pagination that advances through results (collection)
-    // 7. detail view
-    // 
-    // models: movie model
-    // collectionmodel: movies collection
-    // views: serch/table view, movie detail view
-    // routes: index, detail:movie_id
-    //  
-    
-    var Moo = Ember.Application.create();
+    // make a loader instance
+    var loader = new Loader();
 
-    // Movie Model
 
+    // ember app instance
+    var Moo = Ember.Application.create({
+        LOG_TRANSITIONS: true,
+        LOG_ACTIVE_GENERATION: true
+    });
+
+
+    // routes for the application
     Moo.Router.map(function() {
-        // this.resource('todos', { path: '/' });
-        this.route('movie');
+
+        // route for a movie title search
+        this.resource('movies', {
+            path: 'search/:title'
+        });
+
+        // route for a single movie detail by id
+        this.resource('movie', {path:'movie/:idIMDB'});
     
     });
 
-    Moo.MovieRoute = Ember.Route.extend({
-        model: function(){
-            return {
-                    "Title":"Star Wars: Episode IV - A New Hope",
-                    "Year":"1977",
-                    "Rated":"PG",
-                    "Released":"25 May 1977",
-                    "Runtime":"121 min",
-                    "Genre":"Action, Adventure, Fantasy",
-                    "Director":"George Lucas",
-                    "Writer":"George Lucas",
-                    "Actors":"Mark Hamill, Harrison Ford, Carrie Fisher, Peter Cushing",
-                    "Plot":"A young boy from Tatooine sets out on an adventure with an old Jedi named Obi-Wan Kenobi as his mentor to save Princess Leia from the ruthless Darth Vader and Destroy the Death Star built by the Empire which has the power to destroy the entire galaxy.",
-                    "Language":"English",
-                    "Country":"USA",
-                    "Awards":"Won 6 Oscars. Another 38 wins & 26 nominations.",
-                    "Poster":"http://ia.media-imdb.com/images/M/MV5BMTU4NTczODkwM15BMl5BanBnXkFtZTcwMzEyMTIyMw@@._V1_SX300.jpg",
-                    "Metascore":"91",
-                    "imdbRating":"8.7",
-                    "imdbVotes":"683,488",
-                    "imdbID":"tt0076759",
-                    "Type":"movie",
-                    "Response":"True"
-                };
 
+    // movie model object using a base ember object
+    Moo.Movie = Ember.Object.extend({});
+
+
+    // 
+    Moo.MovieRoute = Ember.Route.extend({
+        model: function(params){
+
+            // make a calk to the movie api based on the idIMDB
+            return Ember.$.ajax({
+                url: 'http://www.myapifilms.com/imdb',
+                data: {format: 'JSONP', idIMDB: params.idIMDB},
+                dataType:  'jsonp'
+            }).then(function(res){
+               
+               // hide the loader
+                loader.hide();
+
+                // return a movie model instance with results
+                return Moo.Movie.create({
+                    idIMDB: res.idIMDB,
+                    plot: res.simplePlot,
+                    poster: res.urlPoster,
+                    writer: res.writers,
+                    director: res.directors,
+                    title: res.title
+                });
+            });
+
+        },
+        actions: {
+
+            // fires when a movie title search is loading
+            loading: function(){
+
+                // show the loader
+                loader.show();
+            }
+        }
+    });
+
+
+    Moo.MoviesRoute = Ember.Route.extend({
+        model: function(params){
+            return Ember.$.ajax({
+                url: 'http://www.myapifilms.com/imdb',
+                data: {title: params.title, format: 'JSONP'},
+                dataType: 'jsonp'
+            }).then(function(res){
+
+                // hide the loader 
+                loader.hide();
+
+                return res;
+            });
+
+        },
+
+        // fires when the route is loading the model data
+        actions: {
+            loading: function(transition, originRoute) {
+               loader.show();
+
+               return true;
+            }
+        }
+    });
+
+
+    /**
+     * Application controller, mostly handles searches from the search field
+     */
+    Moo.ApplicationController = Ember.ObjectController.extend({
+        searchTerms: '',
+        appName: function() {
+            var st = this.get('searchTerms');
+
+            if (st) {
+                return st + "???";
+            }else{
+                return "Mooveez";
+            }
+        }.property('searchTerms'),
+        actions: {
+            search: function(){
+                this.transitionToRoute('movies', this.get('searchTerms'));
+            }
         }
     });
 
